@@ -1,0 +1,26 @@
+<idea-plugin>
+  <id>com.dengzii.plugin.converter</id>
+  <name>Simplify,Traditional Converter(简繁转换)</name>
+  <version>1.0</version>
+  <vendor email="denua@foxmail.com" url="https://dengzii.com">dengzi</vendor>
+
+  <description><![CDATA[ The simplify chinese and traditional chinese converter.]]></description>
+
+<!--  <change-notes><![CDATA[-->
+
+<!--]]>-->
+<!--  </change-notes>-->
+
+  <idea-version since-build="173.0"/>
+  <extensions defaultExtensionNs="com.intellij">
+
+  </extensions>
+
+  <actions>
+    <action id="com.dengzii.plugin.converter.MainAction" class="com.dengzii.plugin.converter.MainAction"
+            text="SimTraConverter" description="Simplify, traditional chinese convert">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </action>
+  </actions>
+
+</idea-plugin>
