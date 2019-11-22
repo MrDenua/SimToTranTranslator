@@ -17,8 +17,9 @@ public class ConverterDialog extends JDialog {
 
     public ConverterDialog() {
         setContentPane(contentPane);
-        setModal(true);
 
+        setModal(false);
+        setModalityType(ModalityType.APPLICATION_MODAL);
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -35,6 +36,10 @@ public class ConverterDialog extends JDialog {
     }
 
     public void create(){
+        create("");
+    }
+
+    public void create(String src){
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         int w = screen.width / 3;
         int h = 300;
@@ -44,16 +49,25 @@ public class ConverterDialog extends JDialog {
         setPreferredSize(new Dimension(w, h));
 
         setTitle("Simplify&Traditional Converter");
+        if (!src.trim().isEmpty()){
+            sim.setText(src);
+            toTra();
+        }
         pack();
+        setAlwaysOnTop(true);
         setVisible(true);
     }
 
     private void toTra(){
         tra.setText(ConvertUtils.INSTANCE.simToTra(sim.getText()));
+        tra.requestFocus();
+        tra.selectAll();
     }
 
     private void toSim(){
         sim.setText(ConvertUtils.INSTANCE.traToSim(tra.getText()));
+        sim.requestFocus();
+        sim.selectAll();
     }
 
     private void onCancel() {

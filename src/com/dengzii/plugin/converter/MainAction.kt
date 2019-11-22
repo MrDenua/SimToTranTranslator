@@ -2,7 +2,11 @@ package com.dengzii.plugin.converter
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.psi.xml.XmlText
+import com.intellij.psi.xml.XmlToken
 
 /**
  * <pre>
@@ -18,18 +22,17 @@ class MainAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
 
         val editor = e.getData(PlatformDataKeys.EDITOR)
-        val selectedText: String?
+        val psiFile = e.getData(CommonDataKeys.PSI_FILE)
         editor?.let {
-            selectedText = it.selectionModel.selectedText
-            if (selectedText != null) {
-                val start = it.selectionModel.selectionStart
-                val end = it.selectionModel.selectionEnd
-                val text = editor.document.text.replaceRange(
-                        start..end + 1, ConvertUtils.simToTra(selectedText))
-                editor.document.setText(text)
+            val xmlTokenText = psiFile?.findElementAt(editor.caretModel.offset) ?: return@let
+
+            if (xmlTokenText is XmlToken) {
+                val xmlText = xmlTokenText.parent as XmlText
+                WriteCommandAction.writeCommandAction(e.project).run(TextWriter(xmlText))
                 return
             }
         }
+
         ConverterDialog().create()
     }
 }
